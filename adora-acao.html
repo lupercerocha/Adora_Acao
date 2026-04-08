@@ -1,0 +1,655 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width,initial-scale=1.0,maximum-scale=1.0">
+<title>Adora Ação — IBEA</title>
+<style>
+@import url('https://fonts.googleapis.com/css2?family=Cormorant+Garamond:wght@400;600;700&family=DM+Sans:wght@400;500;600;700&display=swap');
+*{margin:0;padding:0;box-sizing:border-box}
+:root{
+--bg:#0c101a;--bg2:#141926;--bg3:#1a2035;--bg4:#222940;
+--tx:#e8ecf4;--tx2:#a0aabe;--tx3:#6b7894;
+--bd:#2a3250;--bd2:#353f5c;
+--gold:#c8963e;--gold2:#d4a94f;--gold3:rgba(200,150,62,.15);
+--navy:#152347;--red:#e53e3e;--green:#38a169;--blue:#5b9bf5;
+--orange:#dd6b20;--yellow:#d69e2e;
+--radius:10px;--shadow:0 2px 12px rgba(0,0,0,.4);
+}
+.light{
+--bg:#f4f5f8;--bg2:#ffffff;--bg3:#ffffff;--bg4:#eef0f5;
+--tx:#1a202c;--tx2:#4a5568;--tx3:#8892a8;
+--bd:#dde1ea;--bd2:#ccd0dc;
+--gold:#b07e2a;--gold2:#c8963e;--gold3:rgba(200,150,62,.1);
+--shadow:0 2px 8px rgba(0,0,0,.08);
+}
+body{font-family:'DM Sans',sans-serif;background:var(--bg);color:var(--tx);-webkit-tap-highlight-color:transparent;min-height:100vh}
+.hdr{background:var(--bg2);border-bottom:1px solid var(--bd);padding:12px 16px;display:flex;align-items:center;gap:12px;position:sticky;top:0;z-index:100}
+.hdr-icon{width:40px;height:40px;border-radius:50%;background:var(--gold);display:flex;align-items:center;justify-content:center;font-size:16px;font-weight:700;color:#0c101a;flex-shrink:0}
+.hdr-text h1{font-family:'Cormorant Garamond',serif;font-size:17px;font-weight:700;color:var(--tx);line-height:1.2}
+.hdr-sub{font-size:9px;color:var(--gold);letter-spacing:1.2px;text-transform:uppercase}
+.hdr-right{margin-left:auto;display:flex;align-items:center;gap:8px}
+.theme-btn{background:var(--bg3);border:1px solid var(--bd);color:var(--tx2);padding:6px 12px;border-radius:20px;font-size:11px;cursor:pointer;font-family:inherit;font-weight:600;transition:.2s}
+.theme-btn:hover{border-color:var(--gold);color:var(--gold)}
+.nav{display:flex;background:var(--bg2);border-bottom:1px solid var(--bd);overflow-x:auto;-webkit-overflow-scrolling:touch;padding:0 8px}
+.nav button{background:none;border:none;color:var(--tx3);padding:10px 14px;cursor:pointer;font-size:11px;font-weight:600;white-space:nowrap;border-bottom:2.5px solid transparent;transition:.2s;font-family:inherit}
+.nav button:hover{color:var(--tx)}
+.nav button.on{color:var(--gold);border-bottom-color:var(--gold)}
+.cnt{padding:16px;max-width:900px;margin:0 auto}
+.sec{background:var(--bg2);border:1px solid var(--bd);border-radius:var(--radius);padding:18px;margin-bottom:14px;box-shadow:var(--shadow)}
+.sec-t{font-family:'Cormorant Garamond',serif;font-size:17px;font-weight:700;color:var(--gold);margin-bottom:14px;padding-bottom:8px;border-bottom:1px solid var(--bd);display:flex;align-items:center;gap:8px}
+.sec-t span{font-size:16px}
+.g{display:grid;gap:10px}.g2{grid-template-columns:1fr 1fr}.g3{grid-template-columns:1fr 1fr 1fr}.g4{grid-template-columns:1fr 1fr 1fr 1fr}
+.f{display:flex;flex-direction:column;gap:3px}
+.f label{font-size:9px;font-weight:700;color:var(--tx3);text-transform:uppercase;letter-spacing:.6px}
+.f input,.f select,.f textarea{padding:9px 11px;border:1.5px solid var(--bd);border-radius:8px;font-size:13px;font-family:inherit;background:var(--bg3);color:var(--tx);transition:.2s;width:100%}
+.f input:focus,.f select:focus,.f textarea:focus{outline:none;border-color:var(--gold);box-shadow:0 0 0 3px var(--gold3)}
+.f input::placeholder{color:var(--tx3)}
+.f textarea{min-height:70px;resize:vertical}
+.f input[readonly]{opacity:.6}
+.f select{cursor:pointer}.f select option{background:var(--bg2);color:var(--tx)}
+.cr{display:flex;align-items:center;gap:8px;padding:5px 8px;background:var(--bg3);border-radius:8px;border:1px solid var(--bd);cursor:pointer;transition:.2s}
+.cr input[type=checkbox]{width:18px;height:18px;accent-color:var(--gold);cursor:pointer}
+.cr label{font-size:12px;font-weight:500;cursor:pointer;color:var(--tx2)}
+.cr.checked{border-color:var(--gold);background:var(--gold3)}
+.cr.checked label{color:var(--gold)}
+.btn{padding:11px 20px;border:none;border-radius:8px;font-size:13px;font-weight:600;cursor:pointer;transition:.2s;display:inline-flex;align-items:center;gap:6px;font-family:inherit}
+.bp{background:var(--gold);color:#0c101a}.bp:hover{background:var(--gold2);transform:translateY(-1px)}
+.bn{background:var(--bg4);border:1px solid var(--bd);color:var(--tx)}.bn:hover{border-color:var(--gold);color:var(--gold)}
+.bo{background:transparent;border:1.5px solid var(--bd);color:var(--tx2)}.bo:hover{border-color:var(--gold);color:var(--gold)}
+.bd{background:var(--red);color:#fff}.bd:hover{opacity:.9}
+.bs{padding:6px 12px;font-size:11px}
+.br{display:flex;gap:8px;margin-top:16px;flex-wrap:wrap;justify-content:center}
+.tw{overflow-x:auto;-webkit-overflow-scrolling:touch}
+table{width:100%;border-collapse:collapse;font-size:12px}
+th{background:var(--bg4);color:var(--gold);padding:9px 10px;text-align:left;font-weight:600;font-size:10px;text-transform:uppercase;letter-spacing:.4px;white-space:nowrap;border-bottom:1px solid var(--bd)}
+td{padding:9px 10px;border-bottom:1px solid var(--bd);white-space:nowrap;color:var(--tx2)}
+tr:hover td{background:var(--bg3)}
+.badge{display:inline-block;padding:3px 9px;border-radius:12px;font-size:10px;font-weight:700;text-transform:uppercase;letter-spacing:.3px}
+.b-ag{background:rgba(214,158,46,.15);color:#d69e2e}.b-at{background:rgba(91,155,245,.15);color:var(--blue)}.b-fi{background:rgba(56,161,105,.15);color:var(--green)}
+.sb{display:flex;gap:10px;margin-bottom:14px;flex-wrap:wrap}
+.sb input{flex:1;min-width:180px;padding:10px 14px;border:1.5px solid var(--bd);border-radius:8px;font-size:13px;font-family:inherit;background:var(--bg3);color:var(--tx)}
+.sb input:focus{outline:none;border-color:var(--gold)}
+.empty{text-align:center;padding:40px;color:var(--tx3);font-size:13px}
+.mo{position:fixed;top:0;left:0;right:0;bottom:0;background:rgba(0,0,0,.6);z-index:1000;display:flex;align-items:center;justify-content:center;padding:16px}
+.md{background:var(--bg2);border:1px solid var(--bd);border-radius:14px;max-width:560px;width:100%;max-height:90vh;overflow-y:auto;padding:20px;box-shadow:0 20px 60px rgba(0,0,0,.5)}
+.md-t{font-family:'Cormorant Garamond',serif;font-size:20px;font-weight:700;color:var(--gold);margin-bottom:14px}
+.rw{display:flex;gap:6px;margin-bottom:4px;font-size:12px}.rw b{min-width:120px;color:var(--tx3);flex-shrink:0}.rw span{color:var(--tx)}
+.save-ind{display:flex;align-items:center;gap:4px;font-size:10px;color:var(--green);font-weight:600;letter-spacing:.5px;text-transform:uppercase}
+.save-dot{width:7px;height:7px;border-radius:50%;background:var(--green);animation:pulse 2s infinite}
+@keyframes pulse{0%,100%{opacity:1}50%{opacity:.3}}
+/* Scan section */
+.scan-area{background:linear-gradient(135deg,var(--bg3),var(--bg4));border:2px dashed var(--gold);border-radius:14px;padding:28px;text-align:center;margin-bottom:14px}
+.scan-area h2{font-family:'Cormorant Garamond',serif;font-size:22px;color:var(--gold);margin-bottom:6px}
+.scan-area p{font-size:12px;color:var(--tx3);margin-bottom:16px}
+.scan-btns{display:flex;gap:10px;justify-content:center;flex-wrap:wrap}
+.scan-btn{padding:14px 24px;border:none;border-radius:10px;font-size:14px;font-weight:700;cursor:pointer;font-family:inherit;display:flex;align-items:center;gap:8px;transition:.2s}
+.scan-btn:hover{transform:translateY(-2px)}
+.scan-sus{background:#2563eb;color:#fff}
+.scan-id{background:#7c3aed;color:#fff}
+.scan-skip{background:var(--bg3);border:1px solid var(--bd);color:var(--tx2);font-size:12px;padding:10px 20px}
+.scan-loading{display:flex;flex-direction:column;align-items:center;gap:12px;padding:20px}
+.spinner{width:36px;height:36px;border:3px solid var(--bd);border-top-color:var(--gold);border-radius:50%;animation:spin .8s linear infinite}
+@keyframes spin{to{transform:rotate(360deg)}}
+.scan-preview{max-width:260px;border-radius:10px;margin:12px auto;border:2px solid var(--bd)}
+/* Risk colors */
+.risk-opt{padding:2px 0}
+.risk-dot{display:inline-block;width:10px;height:10px;border-radius:50%;margin-right:6px;vertical-align:middle}
+@media(max-width:768px){.g2,.g3,.g4{grid-template-columns:1fr 1fr}.hdr-text h1{font-size:15px}}
+@media(max-width:480px){.g2,.g3,.g4{grid-template-columns:1fr}}
+@media print{
+.no-print{display:none!important}.print-only{display:block!important}
+body{background:#fff!important;font-size:11px;color:#000!important}
+.pp{padding:16px}.pp h2{font-size:15px;text-align:center;margin-bottom:2px}
+.pp .psub{font-size:10px;text-align:center;color:#555;margin-bottom:14px}
+.ps{margin:10px 0;page-break-inside:avoid}.ps h3{font-size:11px;border-bottom:1.5px solid #333;padding-bottom:3px;margin-bottom:6px;text-transform:uppercase}
+.pf{display:flex;gap:4px;margin:3px 0;font-size:11px}.pf b{min-width:100px}
+.pl{border-bottom:1px solid #aaa;min-height:22px;margin:5px 0}
+.pg{display:grid;grid-template-columns:1fr 1fr;gap:3px}
+.pg3{display:grid;grid-template-columns:1fr 1fr 1fr;gap:3px}
+.pp table{border:1px solid #333;width:100%;border-collapse:collapse}
+.pp th,.pp td{border:1px solid #333;padding:4px 6px;font-size:10px}.pp th{background:#eee}
+}
+.print-only{display:none}
+</style>
+</head>
+<body>
+<div id="app"></div>
+<script>
+const SK='ibea_v4';
+let D={patients:[],doctors:[],records:[],currentForm:null};
+let TAB='ficha',SEARCH='',EDITING=null,ETYPE=null,VIEW=null,THEME='dark',SHOW_FORM=false,SCANNING=false,SCAN_STATUS='';
+
+// ===== MASKS =====
+function maskCPF(v){v=v.replace(/\D/g,'').slice(0,11);if(v.length>9)return v.replace(/(\d{3})(\d{3})(\d{3})(\d+)/,'$1.$2.$3-$4');if(v.length>6)return v.replace(/(\d{3})(\d{3})(\d+)/,'$1.$2.$3');if(v.length>3)return v.replace(/(\d{3})(\d+)/,'$1.$2');return v;}
+function maskCEP(v){v=v.replace(/\D/g,'').slice(0,8);if(v.length>5)return v.replace(/(\d{5})(\d+)/,'$1-$2');return v;}
+function maskPhone(v){v=v.replace(/\D/g,'').slice(0,11);if(v.length>10)return v.replace(/(\d{2})(\d{5})(\d{4})/,'($1) $2-$3');if(v.length>6)return v.replace(/(\d{2})(\d{4,5})(\d*)/,'($1) $2-$3');if(v.length>2)return v.replace(/(\d{2})(\d+)/,'($1) $2');return v;}
+function maskDate(v){v=v.replace(/\D/g,'').slice(0,8);if(v.length>4)return v.replace(/(\d{2})(\d{2})(\d+)/,'$1/$2/$3');if(v.length>2)return v.replace(/(\d{2})(\d+)/,'$1/$2');return v;}
+function dateToISO(d){if(!d)return'';const p=d.split('/');return p.length===3&&p[2].length===4?p[2]+'-'+p[1]+'-'+p[0]:'';}
+
+// ===== UTILS =====
+function load(){try{const s=JSON.parse(localStorage.getItem(SK)||'{}');D.patients=s.patients||[];D.doctors=s.doctors||[];D.records=s.records||[];D.currentForm=s.currentForm||null;THEME=localStorage.getItem('ibea_theme')||'dark';SHOW_FORM=!!D.currentForm?.nome;}catch(e){}}
+function save(){localStorage.setItem(SK,JSON.stringify(D));}
+function uid(){return Date.now().toString(36)+Math.random().toString(36).slice(2,7);}
+function td(){return new Date().toISOString().slice(0,10);}
+function nw(){return new Date().toTimeString().slice(0,5);}
+function fd(d){if(!d)return'';const p=d.split('-');return p.length===3?p[2]+'/'+p[1]+'/'+p[0]:d;}
+function calcAge(b){if(!b)return'';const d=new Date(b+'T00:00:00'),t=new Date();let a=t.getFullYear()-d.getFullYear();const m=t.getMonth()-d.getMonth();if(m<0||(m===0&&t.getDate()<d.getDate()))a--;if(a<0)return'';if(a===0){let mo=t.getMonth()-d.getMonth()+(t.getFullYear()-d.getFullYear())*12;if(t.getDate()<d.getDate())mo--;return mo+' meses';}return a+' anos';}
+function getP(id){return D.patients.find(x=>x.id===id);}
+function getDoc(id){return D.doctors.find(x=>x.id===id);}
+const SL={aguardando:'Aguardando',em_atendimento:'Em Atendimento',finalizado:'Finalizado'};
+const BC={aguardando:'b-ag',em_atendimento:'b-at',finalizado:'b-fi'};
+
+function h(tag,a,...ch){const el=document.createElement(tag);if(a)Object.entries(a).forEach(([k,v])=>{if(k==='on'&&typeof v==='object')Object.entries(v).forEach(([e,fn])=>el.addEventListener(e,fn));else if(k==='className')el.className=v;else if(k==='style'&&typeof v==='object')Object.assign(el.style,v);else if(k==='checked')el.checked=v;else if(k==='readonly')el.readOnly=v;else if(k==='value'){if(tag==='textarea')el.textContent=v;else el.value=v;}else if(k==='type')el.type=v;else if(k==='placeholder')el.placeholder=v;else if(k==='innerHTML')el.innerHTML=v;else if(k==='selected')el.selected=v;else if(k==='accept')el.accept=v;else if(k==='capture')el.setAttribute('capture',v);else if(k==='multiple')el.multiple=v;else if(k==='disabled')el.disabled=v;else el.setAttribute(k,v);});ch.flat(9).forEach(c=>{if(c!=null&&c!==false&&c!=='')el.appendChild(typeof c==='string'?document.createTextNode(c):c);});return el;}
+
+function applyTheme(){document.body.className=THEME==='light'?'light':'';localStorage.setItem('ibea_theme',THEME);}
+function autoSave(k,v){if(!D.currentForm)D.currentForm=newForm();D.currentForm[k]=v;save();}
+
+const RISK_OPTIONS=[
+{v:'',l:'Selecione a classificação...', color:''},
+{v:'vermelho',l:'🔴 Vermelho — Emergência (atendimento imediato)', color:'#e53e3e'},
+{v:'laranja',l:'🟠 Laranja — Muito Urgente (até 10 min)', color:'#dd6b20'},
+{v:'amarelo',l:'🟡 Amarelo — Urgente (até 60 min)', color:'#d69e2e'},
+{v:'verde',l:'🟢 Verde — Pouco Urgente (até 120 min)', color:'#38a169'},
+{v:'azul',l:'🔵 Azul — Não Urgente (até 240 min)', color:'#3182ce'},
+];
+
+function newForm(){return{id:uid(),unidadeSaude:'Adora Ação — Ação Solidária IBEA',secretaria:'',municipio:'',
+nome:'',dataNascimento:'',dataNascimentoDisplay:'',idade:'',sexo:'',cartaoSus:'',nomeMae:'',profissao:'',cpf:'',
+endereco:'',numero:'',complemento:'',cep:'',bairro:'',cidade:'João Pessoa',estado:'PB',telefone:'',
+data:td(),hora:nw(),motivoProcura:'',rubricaServidor:'',assinaturaPaciente:'',
+doctorId:'',medicoNome:'',medicoCRM:'',
+emergencia:false,urgencia:false,naoUrgencia:false,acidenteTrabalho:false,acidenteTransito:false,
+classificacaoRisco:'',queixa:'',antecedentesAlergicos:'',has:'',dm:'',
+assinaturaAcolhimento:'',classificacaoFinal:'',
+anamnese:'',
+peso:'',temperatura:'',fc:'',pa:'',fr:'',glasgow:'',spo2:'',hgt:'',exameFisicoObs:'',
+labSolicitado:false,radioSolicitado:false,ecgSolicitado:false,outrosExames:'',
+hipoteseDiagnostico:'',cid:'',condutaMedicacao:false,condutaObservacao:false,condutaLaudoAIH:false,
+desfechoData:'',desfechoHora:'',altaUBS:false,obito:false,outraUrgencia:false,especialidade:'',internacao:false,
+status:'aguardando',createdAt:new Date().toISOString()};}
+
+// ===== CAMERA + OCR =====
+async function captureAndOCR(docType){
+  return new Promise((resolve)=>{
+    const input=document.createElement('input');
+    input.type='file';input.accept='image/*';input.capture='environment';
+    input.onchange=async(e)=>{
+      const file=e.target.files[0];if(!file){resolve(null);return;}
+      SCANNING=true;SCAN_STATUS='Processando imagem...';render();
+      try{
+        const base64=await fileToBase64(file);
+        const prompt=docType==='sus'
+          ?'Extraia os dados deste Cartão SUS brasileiro. Retorne SOMENTE um JSON válido sem markdown, com os campos: {"nome":"","cartaoSus":"","dataNascimento":"DD/MM/AAAA","sexo":"","nomeMae":"","cpf":""}. Campos não encontrados deixe vazio.'
+          :'Extraia os dados deste documento de identidade brasileiro (RG/CNH/Certidão). Retorne SOMENTE um JSON válido sem markdown, com os campos: {"nome":"","cpf":"","dataNascimento":"DD/MM/AAAA","sexo":"","nomeMae":"","endereco":"","numero":"","bairro":"","cidade":"","estado":"","cep":""}. Campos não encontrados deixe vazio.';
+        SCAN_STATUS='Lendo documento com IA...';render();
+        const resp=await fetch('https://api.anthropic.com/v1/messages',{
+          method:'POST',
+          headers:{'Content-Type':'application/json'},
+          body:JSON.stringify({
+            model:'claude-sonnet-4-20250514',
+            max_tokens:1000,
+            messages:[{role:'user',content:[
+              {type:'image',source:{type:'base64',media_type:file.type||'image/jpeg',data:base64}},
+              {type:'text',text:prompt}
+            ]}]
+          })
+        });
+        const data=await resp.json();
+        const text=data.content?.map(c=>c.text||'').join('')||'';
+        const clean=text.replace(/```json|```/g,'').trim();
+        const parsed=JSON.parse(clean);
+        resolve(parsed);
+      }catch(err){
+        console.error('OCR error:',err);
+        alert('Não foi possível ler o documento. Tente novamente ou preencha manualmente.');
+        resolve(null);
+      }finally{SCANNING=false;SCAN_STATUS='';render();}
+    };
+    input.click();
+  });
+}
+
+function fileToBase64(file){return new Promise((res,rej)=>{const r=new FileReader();r.onload=()=>res(r.result.split(',')[1]);r.onerror=()=>rej(new Error('Erro ao ler'));r.readAsDataURL(file);});}
+
+function applyOCRData(data){
+  if(!data)return;
+  if(!D.currentForm)D.currentForm=newForm();
+  const f=D.currentForm;
+  if(data.nome)f.nome=data.nome;
+  if(data.cartaoSus)f.cartaoSus=data.cartaoSus.replace(/\D/g,' ').trim();
+  if(data.cpf)f.cpf=maskCPF(data.cpf);
+  if(data.dataNascimento){
+    f.dataNascimentoDisplay=data.dataNascimento;
+    f.dataNascimento=dateToISO(data.dataNascimento);
+    f.idade=calcAge(f.dataNascimento);
+  }
+  if(data.sexo){
+    const s=data.sexo.toUpperCase();
+    if(s.startsWith('M'))f.sexo='Masculino';
+    else if(s.startsWith('F'))f.sexo='Feminino';
+  }
+  if(data.nomeMae)f.nomeMae=data.nomeMae;
+  if(data.endereco)f.endereco=data.endereco;
+  if(data.numero)f.numero=data.numero;
+  if(data.bairro)f.bairro=data.bairro;
+  if(data.cidade)f.cidade=data.cidade;
+  if(data.estado)f.estado=data.estado;
+  if(data.cep)f.cep=maskCEP(data.cep);
+  save();
+}
+
+// ===== RENDER =====
+function render(){
+applyTheme();const app=document.getElementById('app');app.innerHTML='';
+app.appendChild(renderHeader());app.appendChild(renderNav());
+const cnt=h('div',{className:'cnt no-print'});
+if(TAB==='ficha')cnt.appendChild(renderFicha());
+else if(TAB==='historico')cnt.appendChild(renderHistorico());
+else if(TAB==='pacientes')cnt.appendChild(renderPacientes());
+else if(TAB==='medicos')cnt.appendChild(renderMedicos());
+app.appendChild(cnt);
+if(VIEW)app.appendChild(renderModal());
+}
+
+function renderHeader(){
+return h('div',{className:'hdr no-print'},
+h('div',{className:'hdr-icon'},'✝'),
+h('div',{className:'hdr-text'},h('h1',null,'Adora Ação'),h('div',{className:'hdr-sub'},'Instituto Beneditino Em Adoração')),
+h('div',{className:'hdr-right'},
+h('div',{className:'save-ind'},h('span',{className:'save-dot'}),'Auto-save'),
+h('button',{className:'theme-btn',on:{click:()=>{THEME=THEME==='dark'?'light':'dark';render();}}},THEME==='dark'?'☀️ Claro':'🌙 Escuro')));}
+
+function renderNav(){
+const tabs=[['ficha','📋 Ficha'],['historico','📜 Histórico'],['pacientes','👤 Pacientes'],['medicos','👨‍⚕️ Médicos']];
+return h('div',{className:'nav no-print'},...tabs.map(([k,l])=>h('button',{className:TAB===k?'on':'',on:{click:()=>{TAB=k;SEARCH='';EDITING=null;ETYPE=null;VIEW=null;render();}}},l)));}
+
+// ===== FICHA =====
+function renderFicha(){
+if(!D.currentForm)D.currentForm=newForm();
+const f=D.currentForm;
+const w=h('div');
+
+// Scan area (show when form is empty or not started)
+if(!SHOW_FORM && !f.nome){
+  if(SCANNING){
+    const scanDiv=h('div',{className:'scan-area'});
+    scanDiv.appendChild(h('div',{className:'scan-loading'},
+      h('div',{className:'spinner'}),
+      h('p',{style:{color:'var(--gold)',fontWeight:'600',fontSize:'14px'}},SCAN_STATUS||'Processando...'),
+      h('p',{style:{color:'var(--tx3)',fontSize:'11px'}},'Aguarde enquanto a IA lê o documento')
+    ));
+    w.appendChild(scanDiv);
+    return w;
+  }
+  const scanDiv=h('div',{className:'scan-area'});
+  scanDiv.appendChild(h('h2',null,'📸 Digitalizar Documento'));
+  scanDiv.appendChild(h('p',null,'Tire uma foto do Cartão SUS ou Identidade do paciente para preencher a ficha automaticamente'));
+  const btns=h('div',{className:'scan-btns'});
+  btns.appendChild(h('button',{className:'scan-btn scan-sus',on:{click:async()=>{
+    const data=await captureAndOCR('sus');applyOCRData(data);SHOW_FORM=true;render();
+  }}},'📇 Cartão SUS'));
+  btns.appendChild(h('button',{className:'scan-btn scan-id',on:{click:async()=>{
+    const data=await captureAndOCR('id');applyOCRData(data);SHOW_FORM=true;render();
+  }}},'🪪 Identidade / RG'));
+  btns.appendChild(h('button',{className:'scan-btn scan-skip',on:{click:()=>{SHOW_FORM=true;render();}}},'✏️ Preencher Manualmente'));
+  scanDiv.appendChild(btns);
+  w.appendChild(scanDiv);
+
+  // Also show a "re-scan more" hint
+  const hintSec=h('div',{style:{textAlign:'center',padding:'12px',color:'var(--tx3)',fontSize:'11px'}},'Você pode digitalizar os dois documentos em sequência para completar mais dados');
+  w.appendChild(hintSec);
+  return w;
+}
+
+// ===== Full form =====
+SHOW_FORM=true;
+
+// Re-scan button
+const rescan=h('div',{style:{display:'flex',gap:'8px',justifyContent:'flex-end',marginBottom:'10px'}},
+  h('button',{className:'btn bs',style:{background:'#2563eb',color:'#fff'},on:{click:async()=>{
+    const data=await captureAndOCR('sus');applyOCRData(data);render();
+  }}},'📇 Digitalizar SUS'),
+  h('button',{className:'btn bs',style:{background:'#7c3aed',color:'#fff'},on:{click:async()=>{
+    const data=await captureAndOCR('id');applyOCRData(data);render();
+  }}},'🪪 Digitalizar RG')
+);
+w.appendChild(rescan);
+
+const mkF=(label,key,ops)=>{
+const d=h('div',{className:'f'});d.appendChild(h('label',null,label));
+const mask=ops?.mask;
+const a={value:f[key]||'','data-k':key,on:{
+  input:function(e){
+    let v=e.target.value;
+    if(mask==='cpf'){v=maskCPF(v);e.target.value=v;}
+    else if(mask==='cep'){v=maskCEP(v);e.target.value=v;}
+    else if(mask==='phone'){v=maskPhone(v);e.target.value=v;}
+    else if(mask==='date'){v=maskDate(v);e.target.value=v;
+      const iso=dateToISO(v);if(iso){autoSave('dataNascimento',iso);const ae=w.querySelector('[data-k="idade"]');if(ae){const ag=calcAge(iso);ae.value=ag;autoSave('idade',ag);}}}
+    autoSave(key,v);
+  },
+  change:function(e){
+    let v=e.target.value;
+    if(key==='dataNascimentoISO'){
+      autoSave('dataNascimento',v);
+      const display=fd(v);autoSave('dataNascimentoDisplay',display);
+      const ae=w.querySelector('[data-k="idade"]');if(ae){const ag=calcAge(v);ae.value=ag;autoSave('idade',ag);}
+    }
+    autoSave(key,v);
+  }},
+  ...(ops?.type?{type:ops.type}:{}),
+  ...(ops?.placeholder?{placeholder:ops.placeholder}:{}),
+  ...(ops?.readonly?{readonly:true}:{})};
+d.appendChild(h('input',a));return d;};
+
+const mkT=(label,key)=>{const d=h('div',{className:'f'});d.appendChild(h('label',null,label));
+d.appendChild(h('textarea',{'data-k':key,value:f[key]||'',on:{input:function(e){autoSave(key,e.target.value);}}}));return d;};
+
+const mkS=(label,key,options)=>{const d=h('div',{className:'f'});d.appendChild(h('label',null,label));
+const sel=h('select',{'data-k':key,on:{change:function(e){autoSave(key,e.target.value);}}});
+options.forEach(o=>{const opt=typeof o==='string'?{v:o,l:o}:o;sel.appendChild(h('option',{value:opt.v,selected:f[key]===opt.v},opt.l));});
+d.appendChild(sel);return d;};
+
+const mkC=(label,key)=>{
+const d=h('div',{className:'cr'+(f[key]?' checked':'')});
+const cb=h('input',{type:'checkbox','data-k':key,checked:!!f[key],on:{change:function(e){autoSave(key,e.target.checked);d.classList.toggle('checked',e.target.checked);}}});
+d.appendChild(cb);d.appendChild(h('label',{on:{click:function(){cb.checked=!cb.checked;cb.dispatchEvent(new Event('change'));}}},label));
+d.addEventListener('click',function(e){if(e.target!==cb&&e.target.tagName!=='LABEL'){cb.checked=!cb.checked;cb.dispatchEvent(new Event('change'));}});
+return d;};
+
+// S1 - Unidade
+let s=h('div',{className:'sec'});
+s.appendChild(h('div',{className:'sec-t'},h('span',null,'🏥'),'Identificação da Unidade'));
+s.appendChild(h('div',{className:'g g3'},mkF('Unidade de Saúde','unidadeSaude'),mkF('Secretaria','secretaria'),mkF('Município','municipio')));
+w.appendChild(s);
+
+// S2 - Paciente
+s=h('div',{className:'sec'});
+s.appendChild(h('div',{className:'sec-t'},h('span',null,'👤'),'Dados do Paciente / Usuário'));
+s.appendChild(h('div',{className:'g g2'},mkF('Nome Completo','nome'),mkF('CPF','cpf',{placeholder:'000.000.000-00',mask:'cpf'})));
+s.appendChild(h('div',{className:'g g4',style:{marginTop:'10px'}},
+  mkF('Data Nascimento','dataNascimentoDisplay',{placeholder:'DD/MM/AAAA',mask:'date'}),
+  mkF('Idade','idade',{readonly:true,placeholder:'Automático'}),
+  mkS('Sexo','sexo',[{v:'',l:'Selecione...'},{v:'Masculino',l:'Masculino'},{v:'Feminino',l:'Feminino'}]),
+  mkF('Cartão SUS','cartaoSus')));
+s.appendChild(h('div',{className:'g g2',style:{marginTop:'10px'}},mkF('Nome da Mãe','nomeMae'),mkF('Profissão','profissao')));
+s.appendChild(h('div',{className:'g g3',style:{marginTop:'10px'}},mkF('Endereço','endereco'),mkF('Nº','numero'),mkF('Complemento','complemento')));
+s.appendChild(h('div',{className:'g g4',style:{marginTop:'10px'}},mkF('CEP','cep',{placeholder:'00000-000',mask:'cep'}),mkF('Bairro','bairro'),mkF('Cidade','cidade'),mkF('Estado','estado')));
+s.appendChild(h('div',{className:'g g2',style:{marginTop:'10px'}},mkF('Telefone','telefone',{placeholder:'(00) 00000-0000',mask:'phone'})));
+w.appendChild(s);
+
+// S3 - Atendimento
+s=h('div',{className:'sec'});
+s.appendChild(h('div',{className:'sec-t'},h('span',null,'🏥'),'Atendimento'));
+s.appendChild(h('div',{className:'g g3'},
+  (()=>{const d=h('div',{className:'f'});d.appendChild(h('label',null,'Data'));d.appendChild(h('input',{type:'date',value:f.data||'','data-k':'data',on:{change:function(e){autoSave('data',e.target.value);}}}));return d;})(),
+  (()=>{const d=h('div',{className:'f'});d.appendChild(h('label',null,'Hora'));d.appendChild(h('input',{type:'time',value:f.hora||'','data-k':'hora',on:{change:function(e){autoSave('hora',e.target.value);}}}));return d;})(),
+  mkF('Motivo da Procura','motivoProcura')));
+s.appendChild(h('div',{className:'g g3',style:{marginTop:'10px'}},mkF('Rubrica do Servidor','rubricaServidor'),mkF('Assinatura do Paciente','assinaturaPaciente'),
+mkS('Médico Responsável','doctorId',[{v:'',l:'Selecione médico...'},...D.doctors.map(dc=>({v:dc.id,l:'Dr(a). '+dc.nome+' — '+dc.crm}))])));
+w.appendChild(s);
+
+// S4 - Acolhimento
+s=h('div',{className:'sec'});
+s.appendChild(h('div',{className:'sec-t'},h('span',null,'🩺'),'Acolhimento'));
+s.appendChild(h('div',{style:{display:'flex',gap:'8px',flexWrap:'wrap',marginBottom:'12px'}},
+mkC('Emergência','emergencia'),mkC('Urgência','urgencia'),mkC('Não Urgência','naoUrgencia'),mkC('Acidente de Trabalho','acidenteTrabalho'),mkC('Acidente de Trânsito','acidenteTransito')));
+
+// Risk classification - Manchester
+const riskDiv=h('div',{className:'f'});
+riskDiv.appendChild(h('label',null,'CLASSIFICAÇÃO DE RISCO (Protocolo Manchester)'));
+const riskSel=h('select',{'data-k':'classificacaoRisco',on:{change:function(e){autoSave('classificacaoRisco',e.target.value);}}});
+RISK_OPTIONS.forEach(o=>{
+  const opt=h('option',{value:o.v,selected:f.classificacaoRisco===o.v},o.l);
+  if(o.color)opt.style.color=o.color;
+  riskSel.appendChild(opt);
+});
+riskDiv.appendChild(riskSel);
+s.appendChild(riskDiv);
+
+s.appendChild(h('div',{className:'g g2',style:{marginTop:'10px'}},mkF('Antecedentes Alérgicos','antecedentesAlergicos')));
+s.appendChild(h('div',{style:{marginTop:'10px'}},mkT('Queixa','queixa')));
+s.appendChild(h('div',{className:'g g2',style:{marginTop:'10px'}},mkF('HAS (Hipertensão Arterial Sistêmica)','has'),mkF('DM (Diabetes Mellitus)','dm')));
+s.appendChild(h('div',{className:'g g2',style:{marginTop:'10px'}},mkF('Assinatura','assinaturaAcolhimento'),mkF('Classificação','classificacaoFinal')));
+w.appendChild(s);
+
+// S5 - Anamnese
+s=h('div',{className:'sec'});
+s.appendChild(h('div',{className:'sec-t'},h('span',null,'🧠'),'Anamnese'));
+s.appendChild(mkT('Descrição da Anamnese','anamnese'));
+w.appendChild(s);
+
+// S6 - Exame Físico
+s=h('div',{className:'sec'});
+s.appendChild(h('div',{className:'sec-t'},h('span',null,'❤️'),'Exame Físico'));
+s.appendChild(h('div',{className:'g g4'},
+  mkF('Peso (kg)','peso'),
+  mkF('Temp. — Temperatura (°C)','temperatura'),
+  mkF('FC — Frequência Cardíaca (bpm)','fc'),
+  mkF('PA — Pressão Arterial (mmHg)','pa')));
+s.appendChild(h('div',{className:'g g4',style:{marginTop:'10px'}},
+  mkF('FR — Frequência Respiratória (irpm)','fr'),
+  mkF('Glasgow — Escala de Coma','glasgow'),
+  mkF('SpO2 — Saturação de Oxigênio (%)','spo2'),
+  mkF('HGT — Hemoglicoteste (mg/dL)','hgt')));
+s.appendChild(h('div',{style:{marginTop:'10px'}},mkT('Observações do Exame Físico','exameFisicoObs')));
+w.appendChild(s);
+
+// S7 - Exames
+s=h('div',{className:'sec'});
+s.appendChild(h('div',{className:'sec-t'},h('span',null,'🧪'),'Exames Complementares Solicitados'));
+s.appendChild(h('div',{style:{display:'flex',gap:'8px',flexWrap:'wrap',marginBottom:'10px'}},mkC('Laboratório','labSolicitado'),mkC('Radiológico','radioSolicitado'),mkC('ECG — Eletrocardiograma','ecgSolicitado')));
+s.appendChild(mkF('Outros Exames','outrosExames'));
+w.appendChild(s);
+
+// S8 - Hipótese
+s=h('div',{className:'sec'});
+s.appendChild(h('div',{className:'sec-t'},h('span',null,'📋'),'Hipótese Diagnóstica e Conduta'));
+s.appendChild(h('div',{className:'g g2'},mkT('Hipótese do Diagnóstico','hipoteseDiagnostico'),mkF('CID — Classificação Internacional de Doenças','cid')));
+s.appendChild(h('div',{style:{display:'flex',gap:'8px',flexWrap:'wrap',marginTop:'10px'}},mkC('Medicação','condutaMedicacao'),mkC('Observação','condutaObservacao'),mkC('Laudo para AIH — Autorização de Internação Hospitalar','condutaLaudoAIH')));
+w.appendChild(s);
+
+// S9 - Desfecho
+s=h('div',{className:'sec'});
+s.appendChild(h('div',{className:'sec-t'},h('span',null,'🚪'),'Desfecho / Saída'));
+s.appendChild(h('div',{className:'g g3'},
+  (()=>{const d=h('div',{className:'f'});d.appendChild(h('label',null,'Data Saída'));d.appendChild(h('input',{type:'date',value:f.desfechoData||'','data-k':'desfechoData',on:{change:function(e){autoSave('desfechoData',e.target.value);}}}));return d;})(),
+  (()=>{const d=h('div',{className:'f'});d.appendChild(h('label',null,'Hora Saída'));d.appendChild(h('input',{type:'time',value:f.desfechoHora||'','data-k':'desfechoHora',on:{change:function(e){autoSave('desfechoHora',e.target.value);}}}));return d;})(),
+  mkF('Especialidade','especialidade')));
+s.appendChild(h('div',{style:{display:'flex',gap:'8px',flexWrap:'wrap',marginTop:'10px'}},
+  mkC('Alta referida para UBS — Unidade Básica de Saúde','altaUBS'),
+  mkC('Óbito','obito'),
+  mkC('Outra Unid. Urgência','outraUrgencia'),
+  mkC('Internação no Hospital','internacao')));
+w.appendChild(s);
+
+// S10 - Responsável
+s=h('div',{className:'sec'});
+s.appendChild(h('div',{className:'sec-t'},h('span',null,'👨‍⚕️'),'Responsável — Médico'));
+s.appendChild(h('div',{className:'g g2'},mkF('Nome do Médico','medicoNome'),mkF('CRM — Conselho Regional de Medicina','medicoCRM')));
+w.appendChild(s);
+
+// Buttons
+w.appendChild(h('div',{className:'br',style:{marginBottom:'40px',padding:'20px 0'}},
+h('button',{className:'btn bp',style:{padding:'14px 36px',fontSize:'15px'},on:{click:function(){
+const fm=D.currentForm;if(!fm.nome){alert('Preencha o nome do paciente');return;}
+let pat=D.patients.find(p=>p.cpf&&fm.cpf&&p.cpf===fm.cpf);
+if(!pat){pat={id:uid(),nome:fm.nome,dataNascimento:fm.dataNascimento,idade:fm.idade,sexo:fm.sexo,cartaoSus:fm.cartaoSus,nomeMae:fm.nomeMae,profissao:fm.profissao,cpf:fm.cpf,endereco:fm.endereco,numero:fm.numero,complemento:fm.complemento,cep:fm.cep,bairro:fm.bairro,cidade:fm.cidade,estado:fm.estado,telefone:fm.telefone};D.patients.push(pat);}
+else{Object.assign(pat,{nome:fm.nome,dataNascimento:fm.dataNascimento,idade:fm.idade,sexo:fm.sexo,cartaoSus:fm.cartaoSus,nomeMae:fm.nomeMae,profissao:fm.profissao,endereco:fm.endereco,numero:fm.numero,complemento:fm.complemento,cep:fm.cep,bairro:fm.bairro,cidade:fm.cidade,estado:fm.estado,telefone:fm.telefone});}
+const rec={...fm,patientId:pat.id};D.records.push(rec);D.currentForm=null;SHOW_FORM=false;save();
+alert('✅ Atendimento salvo com sucesso!');render();}}},'💾 Salvar Atendimento'),
+h('button',{className:'btn bn',style:{padding:'14px 36px',fontSize:'15px'},on:{click:function(){doPrint(D.currentForm);}}},'🖨️ Imprimir Ficha'),
+h('button',{className:'btn bo',on:{click:function(){if(confirm('Limpar todos os campos da ficha?')){D.currentForm=null;SHOW_FORM=false;save();render();}}}},'🗑 Nova Ficha')
+));
+return w;}
+
+// ===== HISTÓRICO =====
+function renderHistorico(){
+const w=h('div');const sb=h('div',{className:'sb'});
+sb.appendChild(h('input',{placeholder:'Buscar por nome ou data...',value:SEARCH,on:{input:function(e){SEARCH=e.target.value;render();}}}));
+w.appendChild(sb);
+const recs=D.records.filter(r=>!SEARCH||(r.nome||'').toLowerCase().includes(SEARCH.toLowerCase())||(r.data||'').includes(SEARCH)).sort((a,b)=>(b.createdAt||'').localeCompare(a.createdAt||''));
+if(!recs.length){w.appendChild(h('div',{className:'sec'},h('div',{className:'empty'},'Nenhum atendimento no histórico')));return w;}
+const s=h('div',{className:'sec'});s.appendChild(h('div',{className:'sec-t'},h('span',null,'📜'),'Histórico ('+recs.length+')'));
+const tw=h('div',{className:'tw'}),tb=h('table');
+tb.appendChild(h('thead',null,h('tr',null,h('th',null,'Data'),h('th',null,'Hora'),h('th',null,'Paciente'),h('th',null,'Queixa'),h('th',null,'Risco'),h('th',null,'Ações'))));
+const tbody=h('tbody');
+recs.forEach(r=>{
+  const riskOpt=RISK_OPTIONS.find(o=>o.v===r.classificacaoRisco);
+  const riskColor=riskOpt?.color||'';
+  const riskLabel=r.classificacaoRisco?r.classificacaoRisco.charAt(0).toUpperCase()+r.classificacaoRisco.slice(1):'—';
+  tbody.appendChild(h('tr',null,h('td',null,fd(r.data)),h('td',null,r.hora),h('td',{style:{fontWeight:'600',color:'var(--tx)'}},r.nome||'—'),
+  h('td',{style:{maxWidth:'150px',overflow:'hidden',textOverflow:'ellipsis'}},r.queixa||'—'),
+  h('td',null,riskColor?h('span',{style:{color:riskColor,fontWeight:'700',fontSize:'11px'}},riskLabel):h('span',null,'—')),
+  h('td',{style:{display:'flex',gap:'4px'}},
+  h('button',{className:'btn bs bo',on:{click:function(){VIEW=r;render();}}},'Ver'),
+  h('button',{className:'btn bs bn',on:{click:function(){doPrint(r);}}},'🖨'),
+  h('button',{className:'btn bs bd',on:{click:function(){if(confirm('Remover?')){D.records=D.records.filter(x=>x.id!==r.id);save();render();}}}},'✕'))));});
+tb.appendChild(tbody);tw.appendChild(tb);s.appendChild(tw);w.appendChild(s);return w;}
+
+// ===== PACIENTES =====
+function renderPacientes(){
+if(ETYPE==='patient'&&EDITING)return renderPForm();
+const w=h('div');const sb=h('div',{className:'sb'});
+sb.appendChild(h('input',{placeholder:'Buscar nome ou CPF...',value:SEARCH,on:{input:function(e){SEARCH=e.target.value;render();}}}));
+sb.appendChild(h('button',{className:'btn bp',on:{click:function(){EDITING={id:uid(),nome:'',dataNascimento:'',dataNascimentoDisplay:'',idade:'',sexo:'Masculino',cartaoSus:'',nomeMae:'',profissao:'',cpf:'',endereco:'',numero:'',complemento:'',cep:'',bairro:'',cidade:'João Pessoa',estado:'PB',telefone:''};ETYPE='patient';render();}}},'+ Novo'));
+w.appendChild(sb);
+const fl=D.patients.filter(p=>!SEARCH||(p.nome||'').toLowerCase().includes(SEARCH.toLowerCase())||(p.cpf||'').includes(SEARCH));
+if(!fl.length){w.appendChild(h('div',{className:'sec'},h('div',{className:'empty'},'Nenhum paciente')));return w;}
+const s=h('div',{className:'sec'}),tw=h('div',{className:'tw'}),tb=h('table');
+tb.appendChild(h('thead',null,h('tr',null,h('th',null,'Nome'),h('th',null,'CPF'),h('th',null,'Idade'),h('th',null,'Telefone'),h('th',null,'Ações'))));
+const tbody=h('tbody');
+fl.forEach(p=>{tbody.appendChild(h('tr',null,h('td',{style:{fontWeight:'600',color:'var(--tx)'}},p.nome),h('td',null,p.cpf),h('td',null,calcAge(p.dataNascimento)||p.idade||''),h('td',null,p.telefone),
+h('td',{style:{display:'flex',gap:'4px'}},
+h('button',{className:'btn bs bo',on:{click:function(){EDITING={...p};ETYPE='patient';render();}}},'Editar'),
+h('button',{className:'btn bs bd',on:{click:function(){if(confirm('Remover?')){D.patients=D.patients.filter(x=>x.id!==p.id);save();render();}}}},'✕'))));});
+tb.appendChild(tbody);tw.appendChild(tb);s.appendChild(tw);w.appendChild(s);return w;}
+
+function renderPForm(){
+const p={...EDITING};const s=h('div',{className:'sec'});
+s.appendChild(h('div',{className:'sec-t'},'👤 '+(p.nome?'Editar':'Novo')+' Paciente'));
+const get=()=>{s.querySelectorAll('[data-k]').forEach(el=>{p[el.dataset.k]=el.value;});return p;};
+const ff=(l,k,o)=>{const d=h('div',{className:'f'});d.appendChild(h('label',null,l));const inp=h('input',{value:p[k]||'','data-k':k,...(o||{})});
+if(k==='dataNascimento')inp.addEventListener('change',function(e){const ae=s.querySelector('[data-k="idade"]');if(ae)ae.value=calcAge(e.target.value);});d.appendChild(inp);return d;};
+s.appendChild(h('div',{className:'g g2'},ff('Nome','nome'),ff('CPF','cpf')));
+s.appendChild(h('div',{className:'g g4',style:{marginTop:'10px'}},ff('Data Nasc.','dataNascimento',{type:'date'}),ff('Idade','idade',{readonly:true}),
+h('div',{className:'f'},h('label',null,'Sexo'),h('select',{'data-k':'sexo'},h('option',{value:'Masculino',selected:p.sexo==='Masculino'},'Masculino'),h('option',{value:'Feminino',selected:p.sexo==='Feminino'},'Feminino'))),ff('Cartão SUS','cartaoSus')));
+s.appendChild(h('div',{className:'g g2',style:{marginTop:'10px'}},ff('Nome da Mãe','nomeMae'),ff('Profissão','profissao')));
+s.appendChild(h('div',{className:'g g3',style:{marginTop:'10px'}},ff('Endereço','endereco'),ff('Nº','numero'),ff('Complemento','complemento')));
+s.appendChild(h('div',{className:'g g4',style:{marginTop:'10px'}},ff('CEP','cep'),ff('Bairro','bairro'),ff('Cidade','cidade'),ff('Estado','estado')));
+s.appendChild(h('div',{className:'g g2',style:{marginTop:'10px'}},ff('Telefone','telefone')));
+s.appendChild(h('div',{className:'br'},
+h('button',{className:'btn bp',on:{click:function(){const d=get();if(!d.nome){alert('Nome obrigatório');return;}const ex=D.patients.find(x=>x.id===d.id);if(ex)D.patients=D.patients.map(x=>x.id===d.id?d:x);else D.patients.push(d);save();EDITING=null;ETYPE=null;render();}}},'💾 Salvar'),
+h('button',{className:'btn bo',on:{click:function(){EDITING=null;ETYPE=null;render();}}},'Cancelar')));return s;}
+
+// ===== MÉDICOS =====
+function renderMedicos(){
+if(ETYPE==='doctor'&&EDITING)return renderDForm();
+const w=h('div');const sb=h('div',{className:'sb'});
+sb.appendChild(h('input',{placeholder:'Buscar nome ou CRM...',value:SEARCH,on:{input:function(e){SEARCH=e.target.value;render();}}}));
+sb.appendChild(h('button',{className:'btn bp',on:{click:function(){EDITING={id:uid(),nome:'',crm:'',especialidade:'',telefone:''};ETYPE='doctor';render();}}},'+ Novo'));
+w.appendChild(sb);
+const fl=D.doctors.filter(d=>!SEARCH||(d.nome||'').toLowerCase().includes(SEARCH.toLowerCase())||(d.crm||'').includes(SEARCH));
+if(!fl.length){w.appendChild(h('div',{className:'sec'},h('div',{className:'empty'},'Nenhum médico')));return w;}
+const s=h('div',{className:'sec'}),tw=h('div',{className:'tw'}),tb=h('table');
+tb.appendChild(h('thead',null,h('tr',null,h('th',null,'Nome'),h('th',null,'CRM'),h('th',null,'Especialidade'),h('th',null,'Telefone'),h('th',null,'Ações'))));
+const tbody=h('tbody');
+fl.forEach(d=>{tbody.appendChild(h('tr',null,h('td',{style:{fontWeight:'600',color:'var(--tx)'}},d.nome),h('td',null,d.crm),h('td',null,d.especialidade),h('td',null,d.telefone),
+h('td',{style:{display:'flex',gap:'4px'}},
+h('button',{className:'btn bs bo',on:{click:function(){EDITING={...d};ETYPE='doctor';render();}}},'Editar'),
+h('button',{className:'btn bs bd',on:{click:function(){if(confirm('Remover?')){D.doctors=D.doctors.filter(x=>x.id!==d.id);save();render();}}}},'✕'))));});
+tb.appendChild(tbody);tw.appendChild(tb);s.appendChild(tw);w.appendChild(s);return w;}
+
+function renderDForm(){
+const d={...EDITING};const s=h('div',{className:'sec'});
+s.appendChild(h('div',{className:'sec-t'},'👨‍⚕️ '+(d.nome?'Editar':'Novo')+' Médico'));
+const get=()=>{s.querySelectorAll('[data-k]').forEach(el=>{d[el.dataset.k]=el.value;});return d;};
+const ff=(l,k)=>{const div=h('div',{className:'f'});div.appendChild(h('label',null,l));div.appendChild(h('input',{value:d[k]||'','data-k':k}));return div;};
+s.appendChild(h('div',{className:'g g2'},ff('Nome','nome'),ff('CRM','crm')));
+s.appendChild(h('div',{className:'g g2',style:{marginTop:'10px'}},ff('Especialidade','especialidade'),ff('Telefone','telefone')));
+s.appendChild(h('div',{className:'br'},
+h('button',{className:'btn bp',on:{click:function(){const data=get();if(!data.nome){alert('Nome obrigatório');return;}const ex=D.doctors.find(x=>x.id===data.id);if(ex)D.doctors=D.doctors.map(x=>x.id===data.id?data:x);else D.doctors.push(data);save();EDITING=null;ETYPE=null;render();}}},'💾 Salvar'),
+h('button',{className:'btn bo',on:{click:function(){EDITING=null;ETYPE=null;render();}}},'Cancelar')));return s;}
+
+// ===== MODAL =====
+function renderModal(){
+const r=VIEW;const rw=(l,v)=>v?h('div',{className:'rw'},h('b',null,l+':'),h('span',null,v)):null;
+const ov=h('div',{className:'mo',on:{click:function(){VIEW=null;render();}}});
+const md=h('div',{className:'md',on:{click:function(e){e.stopPropagation();}}});
+md.appendChild(h('div',{className:'md-t'},'Ficha de Atendimento'));
+const riskOpt=RISK_OPTIONS.find(o=>o.v===r.classificacaoRisco);
+const riskLabel=riskOpt?riskOpt.l:'';
+[rw('Data/Hora',fd(r.data)+' '+(r.hora||'')),rw('Paciente',r.nome),rw('CPF',r.cpf),rw('Idade',r.idade||calcAge(r.dataNascimento)),rw('Sexo',r.sexo),
+rw('Cartão SUS',r.cartaoSus),rw('Nome da Mãe',r.nomeMae),rw('Endereço',(r.endereco||'')+', '+(r.numero||'')),
+rw('Telefone',r.telefone),rw('Motivo',r.motivoProcura),rw('Classif. Risco',riskLabel),rw('Queixa',r.queixa),
+rw('Ant. Alérgicos',r.antecedentesAlergicos),rw('HAS',r.has),rw('DM',r.dm),
+rw('Anamnese',r.anamnese),
+rw('Peso',r.peso),rw('PA (Pressão Arterial)',r.pa),rw('FC (Freq. Cardíaca)',r.fc),rw('Temp.',r.temperatura),
+rw('SpO2 (Sat. Oxigênio)',r.spo2),rw('Glasgow',r.glasgow),rw('FR (Freq. Resp.)',r.fr),rw('HGT (Glicemia)',r.hgt),
+rw('Hipótese',r.hipoteseDiagnostico),rw('CID',r.cid),rw('Especialidade',r.especialidade),rw('Médico',r.medicoNome)
+].forEach(el=>{if(el)md.appendChild(el);});
+md.appendChild(h('div',{className:'br'},
+h('button',{className:'btn bn',on:{click:function(){VIEW=null;doPrint(r);}}},'🖨 Imprimir'),
+h('button',{className:'btn bo',on:{click:function(){VIEW=null;render();}}},'Fechar')));
+ov.appendChild(md);return ov;}
+
+// ===== PRINT =====
+function doPrint(f){
+const age=calcAge(f.dataNascimento)||(f.idade||'');
+const riskOpt=RISK_OPTIONS.find(o=>o.v===f.classificacaoRisco);
+const riskLabel=riskOpt&&riskOpt.v?riskOpt.l.replace(/🔴|🟠|🟡|🟢|🔵/g,'').trim():'';
+let el=document.getElementById('print-area');if(el)el.remove();
+const div=document.createElement('div');div.id='print-area';div.className='print-only';
+const line='<div class="pl"></div>';const ck=v=>v?'X':' ';
+div.innerHTML=`<div class="pp">
+<h2>ADORA AÇÃO — Ação Solidária</h2>
+<div class="psub">Instituto Beneditino Em Adoração &nbsp;•&nbsp; FICHA DE ATENDIMENTO</div>
+<div class="ps"><h3>IDENTIFICAÇÃO DA UNIDADE</h3>
+<div class="pg"><div class="pf"><b>Unidade:</b> ${f.unidadeSaude||''}</div><div class="pf"><b>Secretaria:</b> ${f.secretaria||''}</div><div class="pf"><b>Município:</b> ${f.municipio||''}</div></div></div>
+<div class="ps"><h3>DADOS DO PACIENTE</h3>
+<div class="pg">
+<div class="pf"><b>Nome:</b> ${f.nome||''}</div><div class="pf"><b>CPF:</b> ${f.cpf||''}</div>
+<div class="pf"><b>Idade:</b> ${age}</div><div class="pf"><b>Sexo:</b> ${f.sexo||''}</div>
+<div class="pf"><b>Data Nasc.:</b> ${f.dataNascimentoDisplay||fd(f.dataNascimento)}</div><div class="pf"><b>Cartão SUS:</b> ${f.cartaoSus||''}</div>
+<div class="pf"><b>Nome da Mãe:</b> ${f.nomeMae||''}</div><div class="pf"><b>Profissão:</b> ${f.profissao||''}</div>
+<div class="pf"><b>Endereço:</b> ${f.endereco||''}, ${f.numero||''} ${f.complemento||''}</div><div class="pf"><b>CEP:</b> ${f.cep||''}</div>
+<div class="pf"><b>Bairro:</b> ${f.bairro||''}</div><div class="pf"><b>Cidade/UF:</b> ${f.cidade||''}/${f.estado||''}</div>
+<div class="pf"><b>Telefone:</b> ${f.telefone||''}</div></div></div>
+<div class="ps"><h3>ATENDIMENTO</h3>
+<div class="pg"><div class="pf"><b>Data:</b> ${fd(f.data)}</div><div class="pf"><b>Hora:</b> ${f.hora||''}</div><div class="pf"><b>Motivo:</b> ${f.motivoProcura||''}</div><div class="pf"><b>Servidor:</b> ${f.rubricaServidor||''}</div></div></div>
+<div class="ps"><h3>ACOLHIMENTO</h3>
+<div class="pg3"><div>(${ck(f.emergencia)}) Emergência</div><div>(${ck(f.urgencia)}) Urgência</div><div>(${ck(f.naoUrgencia)}) Não Urgência</div><div>(${ck(f.acidenteTrabalho)}) Acid. Trabalho</div><div>(${ck(f.acidenteTransito)}) Acid. Trânsito</div></div>
+<div class="pf" style="margin-top:6px"><b>Classif. Risco:</b> ${riskLabel}</div>
+<div class="pf"><b>Queixa:</b> ${f.queixa||''}</div>${!f.queixa?line:''}
+<div class="pf"><b>Ant. Alérgicos:</b> ${f.antecedentesAlergicos||''}</div>${!f.antecedentesAlergicos?line:''}
+<div class="pg"><div class="pf"><b>HAS:</b> ${f.has||''}</div><div class="pf"><b>DM:</b> ${f.dm||''}</div></div></div>
+<div class="ps"><h3>ANAMNESE</h3>
+${f.anamnese?'<p style="white-space:pre-wrap">'+f.anamnese+'</p>':line+line+line}</div>
+<div class="ps"><h3>EXAME FÍSICO</h3>
+<table><thead><tr><th>Peso</th><th>Temp.(°C)</th><th>FC(bpm)</th><th>PA(mmHg)</th><th>FR(irpm)</th><th>Glasgow</th><th>SpO2(%)</th><th>HGT(mg/dL)</th></tr></thead>
+<tbody><tr><td>${f.peso||'&nbsp;'}</td><td>${f.temperatura||'&nbsp;'}</td><td>${f.fc||'&nbsp;'}</td><td>${f.pa||'&nbsp;'}</td><td>${f.fr||'&nbsp;'}</td><td>${f.glasgow||'&nbsp;'}</td><td>${f.spo2||'&nbsp;'}</td><td>${f.hgt||'&nbsp;'}</td></tr></tbody></table>
+<div style="margin-top:4px"><b>Obs:</b> ${f.exameFisicoObs||''}</div>${!f.exameFisicoObs?line:''}</div>
+<div class="ps"><h3>EXAMES COMPLEMENTARES SOLICITADOS</h3>
+<div class="pg3"><div>(${ck(f.labSolicitado)}) Laboratório</div><div>(${ck(f.radioSolicitado)}) Radiológico</div><div>(${ck(f.ecgSolicitado)}) ECG</div></div>
+<div class="pf" style="margin-top:4px"><b>Outros:</b> ${f.outrosExames||''}</div></div>
+<div class="ps"><h3>HIPÓTESE DIAGNÓSTICA E CONDUTA</h3>
+<div class="pf"><b>Hipótese:</b> ${f.hipoteseDiagnostico||''}</div>${!f.hipoteseDiagnostico?line:''}
+<div class="pf"><b>CID:</b> ${f.cid||'________'}</div>
+<div class="pg3" style="margin-top:4px"><div>(${ck(f.condutaMedicacao)}) Medicação</div><div>(${ck(f.condutaObservacao)}) Observação</div><div>(${ck(f.condutaLaudoAIH)}) Laudo AIH</div></div>${line}</div>
+<div class="ps"><h3>DESFECHO / SAÍDA</h3>
+<div class="pg"><div class="pf"><b>Data:</b> ${fd(f.desfechoData)||'___/___/______'}</div><div class="pf"><b>Hora:</b> ${f.desfechoHora||'___:___'}</div></div>
+<div class="pg3" style="margin-top:4px"><div>(${ck(f.altaUBS)}) Alta ref. UBS</div><div>(${ck(f.obito)}) Óbito</div><div>(${ck(f.outraUrgencia)}) Outra Urg.</div></div>
+<div class="pf" style="margin-top:4px"><b>Especialidade:</b> ${f.especialidade||'________'}</div>
+<div>(${ck(f.internacao)}) Internação no Hospital</div></div>
+<div class="ps"><h3>RESPONSÁVEL</h3>
+<div class="pg"><div class="pf"><b>Médico:</b> ${f.medicoNome||''}</div><div class="pf"><b>CRM:</b> ${f.medicoCRM||''}</div></div></div>
+<div style="margin-top:28px;display:flex;justify-content:space-between">
+<div style="text-align:center"><div class="pl" style="width:200px"></div><div style="font-size:9px">Assinatura do Paciente</div></div>
+<div style="text-align:center"><div class="pl" style="width:200px"></div><div style="font-size:9px">Médico (Carimbo e Assinatura)</div></div></div></div>`;
+document.body.appendChild(div);setTimeout(()=>{window.print();setTimeout(()=>div.remove(),500);},200);}
+
+load();render();
+</script>
+</body>
+</html>
