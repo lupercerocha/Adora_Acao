@@ -32,6 +32,12 @@ body{font-family:'DM Sans',sans-serif;background:var(--bg);color:var(--tx);min-h
 .f input:focus,.f select:focus,.f textarea:focus{outline:none;border-color:var(--gold);box-shadow:0 0 0 3px var(--gold3)}
 .f input::placeholder{color:var(--tx3);font-size:12px}
 .f textarea{min-height:60px;resize:vertical}.f input[readonly]{opacity:.55}
+.f-ok input{border-color:var(--green)!important;box-shadow:0 0 0 2px rgba(56,161,105,.2)!important}
+.f-err input{border-color:var(--red)!important;box-shadow:0 0 0 2px rgba(229,62,62,.2)!important}
+.f-hint{font-size:9px;margin-top:1px;font-weight:600}
+.f-ok .f-hint{color:var(--green)}
+.f-err .f-hint{color:var(--red)}
+.f-loading input{border-color:var(--gold)!important;animation:pu 1s infinite}
 .f select option{background:var(--bg2);color:var(--tx)}
 .cr{display:inline-flex;align-items:center;gap:6px;padding:4px 8px;background:var(--bg3);border-radius:7px;border:1px solid var(--bd);cursor:pointer;margin:2px}
 .cr input{width:16px;height:16px;accent-color:var(--gold);cursor:pointer}
@@ -89,6 +95,20 @@ function nF(){return{id:uid(),unidade:'Adora Ação — Ação Solidária IBEA',
 function h(t,a,...c){const el=document.createElement(t);if(a)Object.entries(a).forEach(([k,v])=>{if(k==='on'&&typeof v==='object')Object.entries(v).forEach(([e,fn])=>el.addEventListener(e,fn));else if(k==='className')el.className=v;else if(k==='style'&&typeof v==='object')Object.assign(el.style,v);else if(k==='checked')el.checked=v;else if(k==='readonly')el.readOnly=v;else if(k==='value'){if(t==='textarea')el.textContent=v;else el.value=v;}else if(k==='innerHTML')el.innerHTML=v;else if(k==='selected')el.selected=v;else el.setAttribute(k,v);});c.flat(9).forEach(x=>{if(x!=null&&x!==false&&x!=='')el.appendChild(typeof x==='string'?document.createTextNode(x):x);});return el;}
 function applyTheme(){document.body.className=THEME==='light'?'light':'';localStorage.setItem('ibea_theme',THEME);}
 
+function validaCPF(cpf){
+cpf=cpf.replace(/\D/g,'');if(cpf.length!==11)return false;
+if(/^(\d)\1{10}$/.test(cpf))return false;
+let s=0;for(let i=0;i<9;i++)s+=parseInt(cpf[i])*(10-i);
+let d1=11-(s%11);if(d1>=10)d1=0;if(parseInt(cpf[9])!==d1)return false;
+s=0;for(let i=0;i<10;i++)s+=parseInt(cpf[i])*(11-i);
+let d2=11-(s%11);if(d2>=10)d2=0;return parseInt(cpf[10])===d2;
+}
+
+async function buscaCEP(cep){
+cep=cep.replace(/\D/g,'');if(cep.length!==8)return null;
+try{const r=await fetch('https://viacep.com.br/ws/'+cep+'/json/');const d=await r.json();if(d.erro)return null;return d;}catch(e){return null;}
+}
+
 function render(){
 applyTheme();const app=document.getElementById('app');app.innerHTML='';
 app.appendChild(h('div',{className:'hdr'},h('div',{className:'hdr-icon'},'✝'),h('div',null,h('h1',null,'Adora Ação'),h('div',{className:'hdr-sub'},'Instituto Beneditino Em Adoração')),h('div',{className:'hdr-r'},h('span',{className:'sdot'}),h('button',{className:'tbtn',on:{click:()=>{THEME=THEME==='dark'?'light':'dark';render();}}},THEME==='dark'?'☀️':'🌙'))));
@@ -118,11 +138,31 @@ const C=(l,k)=>{const d=h('div',{className:'cr'+(f[k]?' ck':'')});const cb=h('in
 let s;
 // Paciente
 s=h('div',{className:'sec'});s.appendChild(h('div',{className:'sec-t'},'👤 Dados do Paciente'));
-s.appendChild(h('div',{className:'g g2'},F('Nome Completo','nome'),F('CPF','cpf',{ph:'000.000.000-00',mask:'cpf'})));
+s.appendChild(h('div',{className:'g g2'},F('Nome Completo','nome'),
+// CPF with validation
+(()=>{const d=h('div',{className:'f'});d.appendChild(h('label',null,'CPF'));
+const inp=h('input',{value:f.cpf||'',placeholder:'000.000.000-00',on:{input:function(e){let v=mCPF(e.target.value);e.target.value=v;autoS('cpf',v);
+const raw=v.replace(/\D/g,'');d.className='f';const hint=d.querySelector('.f-hint');if(hint)hint.remove();
+if(raw.length===11){const ok=validaCPF(v);d.className='f '+(ok?'f-ok':'f-err');const h2=document.createElement('div');h2.className='f-hint';h2.textContent=ok?'✓ CPF válido':'✕ CPF inválido';d.appendChild(h2);}}}});
+d.appendChild(inp);
+if(f.cpf&&f.cpf.replace(/\D/g,'').length===11){const ok=validaCPF(f.cpf);d.className='f '+(ok?'f-ok':'f-err');const h2=document.createElement('div');h2.className='f-hint';h2.textContent=ok?'✓ CPF válido':'✕ CPF inválido';d.appendChild(h2);}
+return d;})()
+));
 s.appendChild(h('div',{className:'g g4',style:{marginTop:'8px'}},F('Data Nascimento','dataNascDisplay',{ph:'DD/MM/AAAA',mask:'dt'}),F('Idade','idade',{ro:true,ph:'Auto'}),S('Sexo','sexo',[{v:'',l:'...'},{v:'Masculino',l:'Masculino'},{v:'Feminino',l:'Feminino'}]),F('Cartão SUS','cartaoSus')));
 s.appendChild(h('div',{className:'g g2',style:{marginTop:'8px'}},F('Nome da Mãe','nomeMae'),F('Profissão','profissao')));
+// CEP first with auto-fill
+s.appendChild(h('div',{className:'g g4',style:{marginTop:'8px'}},
+(()=>{const d=h('div',{className:'f'});d.appendChild(h('label',null,'CEP'));
+const inp=h('input',{value:f.cep||'',placeholder:'00000-000',on:{input:async function(e){let v=mCEP(e.target.value);e.target.value=v;autoS('cep',v);
+const raw=v.replace(/\D/g,'');
+if(raw.length===8){d.className='f f-loading';
+const data=await buscaCEP(v);d.className='f';
+if(data){autoS('endereco',data.logradouro||'');autoS('bairro',data.bairro||'');autoS('cidade',data.localidade||'');autoS('estado',data.uf||'');
+d.className='f f-ok';const h2=document.createElement('div');h2.className='f-hint';h2.textContent='✓ CEP encontrado';d.appendChild(h2);
+render();}else{d.className='f f-err';const h2=document.createElement('div');h2.className='f-hint';h2.textContent='✕ CEP não encontrado';d.appendChild(h2);}}}}});
+d.appendChild(inp);return d;})(),
+F('Bairro','bairro'),F('Cidade','cidade'),F('Estado','estado')));
 s.appendChild(h('div',{className:'g g3',style:{marginTop:'8px'}},F('Endereço','endereco'),F('Nº','numero'),F('Complemento','complemento')));
-s.appendChild(h('div',{className:'g g4',style:{marginTop:'8px'}},F('CEP','cep',{ph:'00000-000',mask:'cep'}),F('Bairro','bairro'),F('Cidade','cidade'),F('Estado','estado')));
 s.appendChild(h('div',{className:'g g2',style:{marginTop:'8px'}},F('Telefone','telefone',{ph:'(00) 00000-0000',mask:'tel'})));
 w.appendChild(s);
 // Atendimento
@@ -221,7 +261,6 @@ const app=document.getElementById('app');
 app.innerHTML=`
 <style>
 .pv{font-family:'DM Sans',sans-serif;background:#fff;color:#152347;padding:15mm;font-size:8.5px;position:relative;max-width:210mm;margin:0 auto;-webkit-print-color-adjust:exact;print-color-adjust:exact}
-.pv *{color:#152347}
 .pv-bar{background:#152347;padding:10px 16px;display:flex;align-items:center;gap:12px;margin:-15mm -15mm 3mm -15mm;position:sticky;top:0;z-index:10}
 .pv-bar span{color:#c8963e;font-size:13px;font-weight:600;flex:1;font-family:'DM Sans',sans-serif}
 .pv-bar button{padding:10px 24px;border:none;border-radius:8px;font-size:14px;font-weight:700;cursor:pointer;font-family:'DM Sans',sans-serif}
@@ -229,26 +268,26 @@ app.innerHTML=`
 .pv-bar .pvb{background:transparent;border:1px solid rgba(255,255,255,.5);color:#fff}
 .pv-wm{position:absolute;top:50%;left:50%;transform:translate(-50%,-50%);opacity:.045;z-index:0;pointer-events:none}
 .pv-wm img{width:260px;height:260px;border-radius:50%}
-.pv .hdr{text-align:center;border-bottom:2px solid #152347;padding-bottom:2mm;margin-bottom:2.5mm;position:relative;z-index:1}
-.pv .t1{font-family:'Cormorant Garamond',serif;font-size:22px;font-weight:700;letter-spacing:2.5px;line-height:1.1}
+.pv .hdr{text-align:center;background:#152347;border-radius:3px;padding:3mm 4mm;margin-bottom:2.5mm;position:relative;z-index:1}
+.pv .t1{font-family:'Cormorant Garamond',serif;font-size:22px;font-weight:700;letter-spacing:2.5px;line-height:1.1;color:#fff!important}
 .pv .t2{font-size:10px;font-weight:600;color:#c8963e!important;letter-spacing:1px}
-.pv .t3{font-size:7px;color:#4a6fa5!important;letter-spacing:.8px;text-transform:uppercase;margin-top:.5px}
+.pv .t3{font-size:7px;color:rgba(255,255,255,.7)!important;letter-spacing:.8px;text-transform:uppercase;margin-top:.5px}
 .pv .s{margin-bottom:1.8mm;position:relative;z-index:1}
 .pv .st{font-size:7.5px;font-weight:700;color:#fff!important;background:#152347;padding:1.2mm 2.5mm;text-transform:uppercase;letter-spacing:.5px;margin-bottom:0}
 .pv .r{display:flex;flex-wrap:wrap}
 .pv .c{border:.4px solid #7b9cc7;padding:1mm 2mm;display:flex;flex-direction:column;min-height:6mm}
-.pv .cl{font-size:5.5px;font-weight:700;color:#4a6fa5!important;text-transform:uppercase;letter-spacing:.3px;margin-bottom:.2mm}
-.pv .cv{font-size:8.5px;min-height:3.5mm}
+.pv .cl{font-size:5.5px;font-weight:700;color:#2c5282!important;text-transform:uppercase;letter-spacing:.3px;margin-bottom:.2mm}
+.pv .cv{font-size:8.5px;color:#152347!important;min-height:3.5mm}
 .pv .w1{width:100%}.pv .w2{width:50%}.pv .w3{width:33.333%}.pv .w4{width:25%}.pv .w23{width:66.666%}
-.pv .ck{display:inline-flex;align-items:center;gap:1.2mm;margin:.5mm 2mm .5mm 0;font-size:7.5px}
-.pv .ckb{width:3mm;height:3mm;border:.4px solid #4a6fa5;display:inline-flex;align-items:center;justify-content:center;font-size:6px;font-weight:700}
-.pv .ln{border-bottom:.4px solid #7b9cc7;min-height:5.5mm;width:100%;line-height:1.4;padding:0 1mm;font-size:8.5px;white-space:pre-wrap}
+.pv .ck{display:inline-flex;align-items:center;gap:1.2mm;margin:.5mm 2mm .5mm 0;font-size:7.5px;color:#152347}
+.pv .ckb{width:3mm;height:3mm;border:.4px solid #2c5282;display:inline-flex;align-items:center;justify-content:center;font-size:6px;font-weight:700;color:#152347}
+.pv .ln{border-bottom:.4px solid #7b9cc7;min-height:5.5mm;width:100%;line-height:1.4;padding:0 1mm;font-size:8.5px;white-space:pre-wrap;color:#152347}
 .pv .tb{width:100%;border-collapse:collapse}
 .pv .tb th{background:#d6e3f5;color:#152347!important;border:.4px solid #7b9cc7;padding:1mm;font-size:5.5px;font-weight:700;text-transform:uppercase;text-align:center}
-.pv .tb td{border:.4px solid #7b9cc7;padding:1mm;font-size:8.5px;text-align:center;height:6mm}
+.pv .tb td{border:.4px solid #7b9cc7;padding:1mm;font-size:8.5px;text-align:center;height:6mm;color:#152347}
 .pv .sig{display:flex;justify-content:space-between;margin-top:5mm}
 .pv .sig-b{text-align:center;width:44%}
-.pv .sig-l{border-top:.4px solid #152347;margin-top:10mm;padding-top:.8mm;font-size:6.5px;color:#4a6fa5!important}
+.pv .sig-l{border-top:.4px solid #152347;margin-top:10mm;padding-top:.8mm;font-size:6.5px;color:#2c5282!important}
 @media print{.pv-bar{display:none!important}@page{size:A4;margin:15mm}.pv{padding:0;max-width:none;-webkit-print-color-adjust:exact;print-color-adjust:exact}}
 </style>
 <div class="pv">
@@ -259,7 +298,7 @@ app.innerHTML=`
 </div>
 <div class="pv-wm"><img src="${IMG_WM}" style="width:320px;height:320px;border-radius:50%" alt=""></div>
 <div class="hdr" style="display:flex;align-items:center;gap:3mm">
-<img src="${IMG_AM}" style="height:13mm" alt="AMAPES">
+<img src="${IMG_AM}" style="height:13mm;filter:brightness(1.2)" alt="AMAPES">
 <div style="flex:1;text-align:center"><div class="t1">ADORA AÇÃO</div>
 <div class="t2">Ação Solidária</div>
 <div class="t3">Instituto Beneditino Em Adoração &nbsp;•&nbsp; AMAPES &nbsp;•&nbsp; Ficha de Atendimento</div>
